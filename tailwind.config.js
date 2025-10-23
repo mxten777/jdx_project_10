@@ -7,13 +7,20 @@ export default {
   theme: {
     extend: {
       colors: {
-        pastelBlue: '#A7C7E7',
-        cream: '#FFFDD0',
-        accent: '#6C90C7',
-        softGray: '#F7F7FA',
+          pastelBlue: '#E6F0FF',
+          cream: '#FFF9F0',
+          accent: '#5B8CFF',
+          softGray: '#F5F6FA',
       },
       fontFamily: {
-        sans: ['Avenir', 'system-ui', 'sans-serif'],
+          sans: [
+            'Pretendard',
+            'Inter',
+            'Apple SD Gothic Neo',
+            'Segoe UI',
+            'Roboto',
+            'sans-serif',
+          ],
       },
       boxShadow: {
         soft: '0 2px 8px 0 rgba(100, 150, 200, 0.08)',

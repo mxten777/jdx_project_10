@@ -1,59 +1,82 @@
+
+import { useEffect, useState } from 'react';
+import { firestore } from '../firebase';
+import { collection, onSnapshot, QueryDocumentSnapshot, QuerySnapshot } from 'firebase/firestore';
+import type { DocumentData } from 'firebase/firestore';
+
 type Memory = {
-  id: number;
-  year: number;
+  id: string;
   text: string;
-  image: string;
+  tags: string[];
+  location: string;
+  persons: string[];
+  isPublic: boolean;
+  urls: string[];
+  createdAt?: { seconds: number };
 };
 
-const dummyMemories: Memory[] = [
-  {
-    id: 1,
-    year: 2010,
-    text: '운동회에서 친구들과 함께한 즐거운 하루!',
-    image: 'https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80',
-  },
-  {
-    id: 2,
-    year: 2012,
-    text: '수학여행에서 찍은 단체사진',
-    image: 'https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=400&q=80',
-  },
-  {
-    id: 3,
-    year: 2011,
-    text: '졸업식의 감동적인 순간',
-    image: 'https://images.unsplash.com/photo-1519125323398-675f0ddb6308?auto=format&fit=crop&w=400&q=80',
-  },
-];
-
-function groupByYear(memories: Memory[]) {
-  const groups: { [year: number]: Memory[] } = {};
+function groupByYearMonth(memories: Memory[]) {
+  const groups: { [year: string]: { [month: string]: Memory[] } } = {};
   memories.forEach(m => {
-    if (!groups[m.year]) groups[m.year] = [];
-    groups[m.year].push(m);
+    if (!m.createdAt) return;
+    const date = new Date(m.createdAt.seconds * 1000);
+    const year = date.getFullYear().toString();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    if (!groups[year]) groups[year] = {};
+    if (!groups[year][month]) groups[year][month] = [];
+    groups[year][month].push(m);
   });
   return groups;
 }
 
 export default function Timeline() {
-  const groups = groupByYear(dummyMemories);
+  const [memories, setMemories] = useState<Memory[]>([]);
+  useEffect(() => {
+    const unsub = onSnapshot(
+      collection(firestore, 'memories'),
+      (snap: QuerySnapshot<DocumentData>) => {
+        setMemories(
+          snap.docs.map((doc: QueryDocumentSnapshot<DocumentData>) => {
+            const data = doc.data() as Memory;
+            return { ...data, id: doc.id };
+          })
+        );
+      }
+    );
+    return () => unsub();
+  }, []);
+
+  const groups = groupByYearMonth(memories);
   const years = Object.keys(groups).sort((a, b) => Number(b) - Number(a));
 
   return (
-    <section className="bg-cream p-6 rounded-xl shadow-soft mb-6">
-      <h2 className="text-xl font-semibold mb-2 text-accent">추억 타임라인</h2>
-      <div className="flex flex-col gap-6">
+    <section
+      className="bg-cream p-6 rounded-xl shadow-soft mb-6"
+      role="region"
+      aria-label="추억 타임라인 섹션"
+    >
+      <h2 className="text-xl font-semibold mb-2 text-accent" id="timeline-section-heading">추억 타임라인</h2>
+      <div className="flex flex-col gap-6" aria-labelledby="timeline-section-heading" aria-live="polite">
         {years.map(year => (
-          <div key={year}>
+          <div key={year} role="group" aria-label={`${year}년 그룹`}>
             <div className="text-lg font-bold text-accent mb-2">{year}년</div>
-            <div className="flex flex-col gap-2 ml-4 border-l-4 border-accent pl-4">
-              {groups[Number(year)].map(mem => (
-                <div key={mem.id} className="bg-white rounded-lg shadow-soft p-3 flex gap-3 items-center">
-                  <img src={mem.image} alt="추억 사진" className="w-16 h-16 object-cover rounded-lg" />
-                  <div className="text-gray-800">{mem.text}</div>
+            {Object.keys(groups[year]).sort((a, b) => Number(b) - Number(a)).map(month => (
+              <div key={month} role="group" aria-label={`${year}년 ${month}월 그룹`}>
+                <div className="text-base font-semibold text-accent mb-1 ml-2">{month}월</div>
+                <div className="flex flex-col gap-2 ml-6 border-l-4 border-accent pl-4" role="list" aria-label={`${year}년 ${month}월 추억 리스트`}>
+                  {groups[year][month].map(mem => (
+                    <div key={mem.id} className="bg-white rounded-lg shadow-soft p-3 flex gap-3 items-center" role="listitem" aria-label={`추억: ${mem.text}`} tabIndex={0}>
+                      {mem.urls && mem.urls.length > 0 ? (
+                        mem.urls[0].match(/\.mp4|\.webm|\.ogg$/)
+                          ? <video src={mem.urls[0]} controls className="w-16 h-16 object-cover rounded-lg" />
+                          : <img src={mem.urls[0]} alt="추억 사진" className="w-16 h-16 object-cover rounded-lg" />
+                      ) : null}
+                      <div className="text-gray-800">{mem.text}</div>
+                    </div>
+                  ))}
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         ))}
       </div>

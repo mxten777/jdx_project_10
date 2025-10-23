@@ -1,3 +1,251 @@
+/* 키보드 접근성 및 포커스 스타일 */
+button:focus-visible, .btn:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-visible, .card:focus-visible, .section:focus-visible {
+  outline: 2px solid #2346A0;
+  outline-offset: 2px;
+  box-shadow: 0 0 0 3px #E6F0FF;
+  z-index: 2;
+}
+button:active, .btn:active {
+  filter: brightness(0.92);
+}
+button:focus:not(:focus-visible), input:focus:not(:focus-visible), textarea:focus:not(:focus-visible), select:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none;
+}
+/* 접근성 색상 대비 강화 (WCAG AA+) */
+:root {
+  --color-accent: #2346A0;
+  --color-accent-dark: #19306B;
+  --color-bg: #F4F6FB;
+  --color-card: #fff;
+  --color-soft: #E6F0FF;
+  --color-text: #181A1B;
+  --color-text-secondary: #2346A0;
+  --color-divider: #D1D5DB;
+}
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+.card, .rounded-xl, .rounded-lg, .section, section {
+  background: var(--color-card);
+  color: var(--color-text);
+}
+.btn, button {
+  background: var(--color-accent);
+  color: #fff;
+}
+.btn-soft, .bg-softGray {
+  background: var(--color-soft);
+  color: var(--color-accent);
+}
+.btn:hover, button:hover {
+  background: var(--color-accent-dark);
+}
+.divider {
+  background: var(--color-divider);
+}
+h1, .text-3xl, .text-2xl {
+  color: var(--color-text);
+}
+h2, .text-xl, .font-semibold {
+  color: var(--color-text-secondary);
+}
+h3, .text-lg, .font-bold {
+  color: var(--color-text-secondary);
+}
+/* 프리미엄 반응형 스타일 */
+@media (max-width: 1024px) {
+  body {
+    font-size: 16px;
+  }
+  .section, section {
+    padding: 1.2rem 0.7rem;
+  }
+  .card, .rounded-xl, .rounded-lg {
+    padding: 1rem 0.7rem;
+  }
+  .btn, button {
+    padding: 0.6rem 1rem;
+    font-size: 1rem;
+  }
+  input, textarea, select {
+    padding: 0.6rem 0.8rem;
+    font-size: 0.98rem;
+  }
+}
+@media (max-width: 640px) {
+  body {
+    font-size: 15px;
+  }
+  .section, section {
+    padding: 0.7rem 0.2rem;
+  }
+  .card, .rounded-xl, .rounded-lg {
+    padding: 0.7rem 0.2rem;
+  }
+  .btn, button {
+    padding: 0.5rem 0.7rem;
+    font-size: 0.95rem;
+  }
+  input, textarea, select {
+    padding: 0.5rem 0.6rem;
+    font-size: 0.95rem;
+  }
+}
+/* 프리미엄 컬러 팔레트 */
+:root {
+  --color-accent: #5B8CFF;
+  --color-accent-dark: #4666B2;
+  --color-bg: #F5F6FA;
+  --color-card: #fff;
+  --color-soft: #E6F0FF;
+  --color-text: #222;
+  --color-text-secondary: #3B4A6B;
+  --color-divider: #E6E8F0;
+}
+body {
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+.card, .rounded-xl, .rounded-lg, .section, section {
+  background: var(--color-card);
+  color: var(--color-text);
+  box-shadow: 0 2px 8px 0 rgba(100, 150, 200, 0.08);
+}
+.btn, button {
+  background: var(--color-accent);
+  color: #fff;
+}
+.btn-soft, .bg-softGray {
+  background: var(--color-soft);
+  color: var(--color-accent);
+}
+.btn:hover, button:hover {
+  background: var(--color-accent-dark);
+}
+.divider {
+  background: var(--color-divider);
+}
+h1, .text-3xl, .text-2xl {
+  color: var(--color-text);
+}
+h2, .text-xl, .font-semibold {
+  color: var(--color-text-secondary);
+}
+h3, .text-lg, .font-bold {
+  color: var(--color-text-secondary);
+}
+/* 프리미엄 버튼/입력 UI 스타일 */
+.btn, button {
+  font-size: 1.08rem;
+  font-weight: 500;
+  padding: 0.7rem 1.3rem;
+  border-radius: 0.6rem;
+  background: #5B8CFF;
+  color: #fff;
+  box-shadow: 0 2px 8px 0 rgba(100, 150, 200, 0.08);
+  border: none;
+  transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+}
+.btn-soft, .bg-softGray {
+  background: #F5F6FA;
+  color: #5B8CFF;
+}
+.btn:hover, button:hover {
+  background: #4666B2;
+  color: #fff;
+  box-shadow: 0 4px 16px 0 rgba(100, 150, 200, 0.12);
+}
+input, textarea, select {
+  font-size: 1.05rem;
+  padding: 0.7rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #E6E8F0;
+  background: #fff;
+  color: #222;
+  margin-bottom: 0.7rem;
+  transition: border 0.2s, box-shadow 0.2s;
+}
+input:focus, textarea:focus, select:focus {
+  border-color: #5B8CFF;
+  box-shadow: 0 0 0 2px #E6F0FF;
+  outline: none;
+}
+/* 프리미엄 가독성 여백/구분선/섹션 스타일 */
+.section, section {
+  margin-bottom: 2.5rem;
+  padding: 2rem 1.5rem;
+  border-radius: 1.2rem;
+  background: #fff;
+  box-shadow: 0 2px 8px 0 rgba(100, 150, 200, 0.08);
+}
+.card, .rounded-xl, .rounded-lg {
+  margin-bottom: 1.2rem;
+  padding: 1.2rem 1rem;
+  border-radius: 1rem;
+  background: #fff;
+  box-shadow: 0 2px 8px 0 rgba(100, 150, 200, 0.08);
+  border: 1px solid #F0F2F8;
+}
+.list, .flex-col.gap-3, .flex-col.gap-4 {
+  gap: 1.2rem !important;
+}
+.divider {
+  height: 1px;
+  background: #E6E8F0;
+  margin: 1.5rem 0;
+  border-radius: 2px;
+}
+/* 프리미엄 가독성 텍스트 스타일 */
+body {
+  font-family: 'Pretendard', 'Inter', 'Apple SD Gothic Neo', 'Segoe UI', 'Roboto', sans-serif;
+  font-size: 17px;
+  color: #222;
+  background: #F5F6FA;
+  letter-spacing: 0.01em;
+  line-height: 1.7;
+}
+h1, .text-3xl, .text-2xl {
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #222;
+}
+h2, .text-xl, .font-semibold {
+  font-weight: 600;
+  color: #2A3A5E;
+}
+h3, .text-lg, .font-bold {
+  font-weight: 600;
+  color: #3B4A6B;
+}
+.card, .rounded-xl, .rounded-lg {
+  background: #fff;
+  box-shadow: 0 2px 8px 0 rgba(100, 150, 200, 0.08);
+  border-radius: 1rem;
+}
+.btn, button {
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  border-radius: 0.5rem;
+  transition: background 0.2s, color 0.2s;
+}
+.btn-accent, .bg-accent {
+  background: #5B8CFF;
+  color: #fff;
+}
+.btn-soft, .bg-softGray {
+  background: #F5F6FA;
+  color: #5B8CFF;
+}
+.btn:hover, button:hover {
+  filter: brightness(0.95);
+}
+.section {
+  margin-bottom: 2.5rem;
+  padding: 2rem;
+  border-radius: 1.2rem;
+}
 
 @tailwind base;
 @tailwind components;
